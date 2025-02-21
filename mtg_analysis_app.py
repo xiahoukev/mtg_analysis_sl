@@ -78,7 +78,7 @@ def create_summary_boxes_enhanced(filtered_df):
     
     # Assign colors and icons for ranks 4th to 1st
     # Changing 4th to 'skyblue'
-    box_colors = ['skyblue', 'skyblue', 'orange', 'silver', 'gold']  # 5th to 1st
+    box_colors = ['skyblue', 'orange', 'silver', 'gold']  # 5th to 1st
     box_icons = ['4️⃣', '🥉', '🥈', '🥇']  # 4th to 1st
 
     # Create four columns
