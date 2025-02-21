@@ -74,26 +74,26 @@ def create_summary_boxes_enhanced(filtered_df):
     # Sort by average position (ascending: lower is better)
     avg_positions = avg_positions.sort_values('position').reset_index(drop=True)
     # Select top 5 players
-    top5 = avg_positions.head(5)
+    top4 = avg_positions.head(4)
     
-    # Assign colors and icons for ranks 5th to 1st
-    # Changing 5th and 4th to 'skyblue'
+    # Assign colors and icons for ranks 4th to 1st
+    # Changing 4th to 'skyblue'
     box_colors = ['skyblue', 'skyblue', 'orange', 'silver', 'gold']  # 5th to 1st
-    box_icons = ['5️⃣', '4️⃣', '🥉', '🥈', '🥇']  # 5th to 1st
+    box_icons = ['4️⃣', '🥉', '🥈', '🥇']  # 4th to 1st
 
-    # Create five columns
-    cols = st.columns(5)
+    # Create four columns
+    cols = st.columns(4)
     
     # Reverse the order to have 5th on the left and 1st on the right
-    top5 = top5[::-1].reset_index(drop=True)
+    top4 = top4[::-1].reset_index(drop=True)
     
     # Prepare ordered_players list (only actual players, no N/A)
-    ordered_players = list(top5['player'])  # Ordered from 5th to 1st
+    ordered_players = list(top4['player'])  # Ordered from 5th to 1st
     
     for i, col in enumerate(cols):
-        if i < len(top5):
-            player = top5.iloc[i]['player']
-            avg_pos = round(top5.iloc[i]['position'], 2)
+        if i < len(top4):
+            player = top4.iloc[i]['player']
+            avg_pos = round(top4.iloc[i]['position'], 2)
             color = box_colors[i]
             icon = box_icons[i]
             with col:
