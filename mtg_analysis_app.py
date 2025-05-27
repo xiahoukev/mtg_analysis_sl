@@ -35,6 +35,11 @@ df['deck'] = df['deck'].replace({'Elven': 'Elves'})  # Ensure consistency
 st.sidebar.header("Filter Options")
 
 with st.sidebar.expander("Main Filters", expanded=True):
+
+    # Slice for 'draw method'
+    draw_options = sorted(df['draw_type'].unique())
+    draw_type = st.multiselect("Draw Type", options=draw_options, default=draw_options)
+
     # Slicer for 'type'
     type_options = sorted(df['type'].unique())
     selected_type = st.multiselect("Select Type", options=type_options, default=type_options)
@@ -43,6 +48,12 @@ with st.sidebar.expander("Main Filters", expanded=True):
     filtered_decks = df[df['type'].isin(selected_type)]['deck'].unique()
     filtered_decks = sorted(filtered_decks)
     selected_deck = st.multiselect("Select Deck", options=filtered_decks, default=filtered_decks)
+
+    # Slicer for 'color'
+    filtered_color = df[df['type'].isin(selected_type)]['primary_mana'].unique()
+    filtered_color = sorted(filtered_color)
+    selected_color = st.multiselect("Select Colour", options=filtered_color, default=filtered_color)
+           
 
 with st.sidebar.expander("Chart 2 Options", expanded=False):
     # Toggle for Chart 2 view
@@ -63,8 +74,10 @@ with st.sidebar.expander("Chart 2 Options", expanded=False):
 
 # Apply filters to data
 filtered_df = df[
+    (df['draw_type'].isin(draw_type)) &
     (df['type'].isin(selected_type)) &
-    (df['deck'].isin(selected_deck))
+    (df['deck'].isin(selected_deck)) &
+    (df['primary_mana'].isin(selected_color))
 ]
 
 # Enhanced Summary Boxes
