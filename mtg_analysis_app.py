@@ -232,6 +232,13 @@ else:
             traceorder='normal'  # Ensures the legend follows the category_orders
         )
     )
+
+    # Explicitly hide y-axis tick labels
+    fig1.update_yaxes(
+        showticklabels=False,  # Hides numbers
+        showgrid=False,        # Hides horizontal lines
+        zeroline=False         # Hides the line at y=0 if it exists
+    )     
     
     # Add percentage labels inside bar segments if percentage > 0%
     for trace in fig1.data:
@@ -303,25 +310,14 @@ else:
                 text=avg_position_deck_chart2['avg_position'],
                 textposition='outside'
             )
-            
-            # Add 'n' games played as annotations on top of each deck's bar
-            annotations = []
-            for idx, row in avg_position_deck_chart2.iterrows():
-                annotations.append(dict(
-                    x=row['deck'],
-                    y=row['avg_position'] + 0.1,  # Slightly above the bar
-                    text=f"n={row['total_games']}",
-                    showarrow=False,
-                    font=dict(
-                        size=12,
-                        color="black"
-                    )
-                ))
-            
-            fig2.update_layout(
-                annotations=annotations
-            )
-            
+
+            # Explicitly hide y-axis tick labels
+            fig2.update_yaxes(
+                showticklabels=False,  # Hides numbers
+                showgrid=False,        # Hides horizontal lines
+                zeroline=False         # Hides the line at y=0 if it exists
+            )     
+
         elif chart2_view == "Distribution":
             # Calculate distribution of ranks per deck for selected players
             chart2_distribution_df = chart2_filtered_df[chart2_filtered_df['position'].isin([1, 2, 3, 4])]
