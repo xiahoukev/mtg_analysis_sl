@@ -220,7 +220,7 @@ else:
     
     fig1.update_layout(
         legend_title_text='Rank',
-        yaxis=dict(range=[0, 100], dtick=20),
+        #yaxis=dict(range=[0, 100], dtick=20),
         uniformtext_minsize=8,
         uniformtext_mode='hide'
     )
