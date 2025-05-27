@@ -1,6 +1,18 @@
+# -------------------- LIBRARIES --------------------
 import streamlit as st
 import pandas as pd
 import plotly.express as px
+
+# -------------------- CONSTANTS --------------------
+mana_colors = {
+    'Blue': "#3f17d3",
+    'Red': "#f30505",
+    'Green': "#076b07",
+    'White': '#FFFFFF',
+    'Black': "#000000",
+    'Colorless': '#7f7f7f',
+    'Unknown': '#cccccc'
+}
 
 # Set page configuration
 st.set_page_config(page_title="MTG Stats Analysis", layout="wide")
