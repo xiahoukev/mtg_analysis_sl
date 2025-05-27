@@ -299,7 +299,7 @@ else:
             )
             
             fig2.update_layout(
-                yaxis=dict(range=[1, 4], dtick=0.5),
+                yaxis=dict(range=[0, 4], dtick=0.5),
                 uniformtext_minsize=8,
                 uniformtext_mode='hide',
                 showlegend=False  # Remove legend here
@@ -359,7 +359,7 @@ else:
             
             fig2.update_layout(
                 legend_title_text='Rank',
-                yaxis=dict(range=[0, 100], dtick=20),
+                #yaxis=dict(range=[0, 100], dtick=20),
                 uniformtext_minsize=8,
                 uniformtext_mode='hide'
             )
@@ -371,6 +371,12 @@ else:
                     traceorder='normal'  # Ensures the legend follows the category_orders
                 )
             )
+
+            fig2.update_yaxes(
+                showticklabels=False,  # Hides numbers
+                showgrid=False,        # Hides horizontal lines
+                zeroline=False         # Hides the line at y=0 if it exists
+            )     
             
             # Add percentage labels inside bar segments if percentage > 0%
             for trace in fig2.data:
