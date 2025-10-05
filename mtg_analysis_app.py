@@ -2,41 +2,54 @@
 import streamlit as st
 import pandas as pd
 import plotly.express as px
+import hashlib, os, time  # <-- add
 
 # -------------------- CONSTANTS --------------------
 mana_colors = {
-    'Blue': "#3f17d3",
-    'Red': "#f30505",
-    'Green': "#076b07",
-    'White': '#FFFFFF',
-    'Black': "#000000",
-    'Colorless': '#7f7f7f',
-    'Unknown': '#cccccc'
+    'Blue': "#3f17d3", 'Red': "#f30505", 'Green': "#076b07",
+    'White': '#FFFFFF', 'Black': "#000000", 'Colorless': '#7f7f7f', 'Unknown': '#cccccc'
 }
 
-# Set page configuration
 st.set_page_config(page_title="MTG Stats Analysis", layout="wide")
-
-# App Title
 st.title("Magic: The Gathering Stats Analysis")
 
+# --- helper: stable file-content key (invalidates cache when file changes)
+def _file_md5(path: str) -> str:
+    try:
+        with open(path, "rb") as f:
+            return hashlib.md5(f.read()).hexdigest()
+    except FileNotFoundError:
+        return "MISSING"
+
 # Load data from Excel
-@st.cache_data
-def load_data(file_path):
-    df = pd.read_excel(file_path, sheet_name='Sheet1')  # Replace 'Sheet1' if necessary
-    return df
+@st.cache_data(show_spinner=False)
+def load_data(file_path: str, version_key: str) -> pd.DataFrame:
+    # version_key is unused inside, but it's part of the cache key
+    return pd.read_excel(file_path, sheet_name="Sheet1")
 
-# Define the path to your Excel file
-DATA_FILE = 'mtg_data.xlsx'  # Ensure this file exists in the same directory
+DATA_FILE = "mtg_data.xlsx"
 
-# Load the data with error handling
+# quick debug + manual cache clear
+with st.sidebar:
+    st.caption(f"CWD: `{os.getcwd()}`")
+    st.caption(f"Data exists? {os.path.exists(DATA_FILE)}")
+    st.caption(f"Data MD5: `{_file_md5(DATA_FILE)[:10]}`")
+    if st.button("Clear data cache"):
+        st.cache_data.clear()
+        st.success("Cleared cache.")
+
+# version banner so you can sanity-check the live build
+APP_VERSION = os.getenv("APP_VERSION", time.strftime("%Y-%m-%d %H:%M:%S UTC", time.gmtime()))
+st.caption(f"App version: {APP_VERSION}")
+
+# Load the data with error handling (now includes content-based cache key)
 try:
-    df = load_data(DATA_FILE)
+    df = load_data(DATA_FILE, _file_md5(DATA_FILE))
 except FileNotFoundError:
-    st.error(f"Excel file '{DATA_FILE}' not found. Please ensure it's in the same directory as this script.")
+    st.error(f"Excel file '{DATA_FILE}' not found. Place it beside this script.")
     st.stop()
 except Exception as e:
-    st.error(f"An error occurred while loading the Excel file: {e}")
+    st.error(f"Error loading Excel: {e}")
     st.stop()
 
 # Data preprocessing
