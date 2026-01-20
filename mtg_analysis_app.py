@@ -9,7 +9,7 @@ import numpy as np
 # -------------------- CONSTANTS & CONFIG --------------------
 DATA_FILE = "mtg_data.xlsx"
 APP_TITLE = "Magic: The Gathering Stats Analysis"
-APP_VERSION = "1.6.0"
+APP_VERSION = "1.8.0" # Bumped version for tracking
 
 # Rank Colours (Global Definition)
 RANK_COLORS = {'1st': 'gold', '2nd': 'silver', '3rd': 'orange', '4th': 'skyblue'}
@@ -17,6 +17,14 @@ RANK_ORDER = ['1st', '2nd', '3rd', '4th']
 
 # Consistent Player Palette (Plotly G10 + Dark24 for variety)
 PLAYER_PALETTE = px.colors.qualitative.G10 + px.colors.qualitative.Dark24
+
+# Navigation Mapping
+NAV_MAP = {
+    "Dashboard": "📊 Dashboard",
+    "Analytics": "🧬 Detailed Player Analytics",
+    "PvP": "⚔️ Player vs Player",
+    "Decks": "🎴 Deck & Set Analysis"
+}
 
 st.set_page_config(page_title="MTG Stats Analysis", layout="wide", page_icon="🃏")
 
@@ -122,6 +130,10 @@ def hex_to_rgba(hex_color, opacity=0.2):
 def get_best_worst(df, category_col):
     """Helper to find Best (Lowest Avg Pos) and Worst (Highest Avg Pos) categories."""
     if df.empty: return "N/A", "N/A"
+    
+    # Check if category column has data
+    if df[category_col].isnull().all(): return "N/A", "N/A"
+    
     stats = df.groupby(category_col)['position'].mean().reset_index()
     if stats.empty: return "N/A", "N/A"
     
@@ -171,13 +183,18 @@ def reset_callbacks():
     st.session_state['f_color'] = get_valid_options(raw_df, 'primary_mana')
 
 st.sidebar.title("Navigation")
-# CHANGED: Added Player vs Player to navigation
-page = st.sidebar.radio("Go to:", ["Dashboard", "Detailed Player Analytics", "Player vs Player", "Deck & Set Analysis"], index=0)
+
+selection = st.sidebar.radio(
+    "Go to:", 
+    list(NAV_MAP.keys()), 
+    format_func=lambda x: NAV_MAP[x],
+    index=0
+)
 
 st.sidebar.markdown("---")
 st.sidebar.header("Global Filters")
 
-if st.sidebar.button("Reset All Filters", on_click=reset_callbacks):
+if st.sidebar.button("🔄 Reset All Filters", on_click=reset_callbacks):
     pass 
 
 with st.sidebar.expander("Filter Options", expanded=True):
@@ -208,7 +225,7 @@ with st.sidebar.expander("Filter Options", expanded=True):
 # ==============================================================================
 # PAGE 1: DASHBOARD
 # ==============================================================================
-if page == "Dashboard":
+if selection == "Dashboard":
     st.title(f"{APP_TITLE} - Dashboard")
     dashboard_df = shared_filtered_df.copy()
 
@@ -253,13 +270,19 @@ if page == "Dashboard":
             c1_grp = c1_df.groupby(['player', 'rank_char']).size().reset_index(name='count')
             c1_grp['percentage'] = c1_grp.groupby('player')['count'].transform(lambda x: (x/x.sum())*100)
             
+            # FIXED: Explicitly force stacking in layout to prevent display issues
             fig1 = px.bar(c1_grp, x='player', y='percentage', color='rank_char', 
-                          color_discrete_map=RANK_COLORS, barmode='stack',
+                          color_discrete_map=RANK_COLORS, 
                           category_orders={'rank_char': RANK_ORDER},
                           title="Rank Distribution by Player",
                           labels={'player': 'Player', 'percentage': 'Percentage (%)', 'rank_char': 'Rank'},
                           hover_data={'count': True, 'percentage': ':.1f'}) 
-            fig1.update_layout(yaxis=dict(showticklabels=False, showgrid=False), legend_title="Rank")
+            
+            fig1.update_layout(
+                barmode='stack',  # FORCE STACK
+                yaxis=dict(showticklabels=False, showgrid=False), 
+                legend_title="Rank"
+            )
             fig1.update_traces(texttemplate='%{y:.1f}%', textposition='inside')
             col1.plotly_chart(fig1, use_container_width=True)
 
@@ -295,7 +318,7 @@ if page == "Dashboard":
             hm = pd.merge(full_grid, stats, on=['player', dim], how='left')
             
             hm['fill'] = hm['mean'].fillna(0)
-            hm['txt'] = hm['mean'].apply(lambda x: f"{x:.1f}" if pd.notnull(x) else("-"))
+            hm['txt'] = hm['mean'].apply(lambda x: f"{x:.1f}" if pd.notnull(x) else "-")
             hm['hov'] = hm.apply(lambda r: f"Avg: {r['mean']:.2f}<br>Games: {int(r['count'])}" if pd.notnull(r['mean']) else "Not Played", axis=1)
             
             z = hm.pivot(index='player', columns=dim, values='fill')
@@ -368,7 +391,7 @@ if page == "Dashboard":
 # ==============================================================================
 # PAGE 2: DETAILED PLAYER ANALYTICS
 # ==============================================================================
-elif page == "Detailed Player Analytics":
+elif selection == "Analytics":
     st.title("Detailed Player Analytics")
     st.markdown("Deep dive into **Elo Skill Ratings**, **Playstyle DNA**, and **Consistency Metrics**.")
     
@@ -400,6 +423,16 @@ elif page == "Detailed Player Analytics":
 
     # --- ROW 2: PLAYER DNA ---
     st.subheader("🧬 Player DNA Analysis")
+    
+    # ADDED BACK: Definitions Expander
+    with st.expander("ℹ️ How to read these metrics"):
+        st.markdown("""
+        * **Lethality:** Pure Win Rate %.
+        * **Consistency:** Ability to avoid 4th place (Higher is better).
+        * **Versatility:** Number of *unique* decks piloted to a win.
+        * **Form:** Win Rate in the last 5 games.
+        * **Top 2 Rate:** Percentage of games finishing 1st or 2nd.
+        """)
     
     dna_data = []
     for p in selected_players:
@@ -481,10 +514,10 @@ elif page == "Detailed Player Analytics":
     st.plotly_chart(fig_draw, use_container_width=True)
 
 # ==============================================================================
-# PAGE 3: PLAYER VS PLAYER (NEW!)
+# PAGE 3: PLAYER VS PLAYER
 # ==============================================================================
-elif page == "Player vs Player":
-    st.title("Head-to-Head Comparison")
+elif selection == "PvP":
+    st.title("⚔️ Head-to-Head Comparison")
     st.markdown("Compare two players directly. Statistics are calculated **only from matches where both players participated**.")
     
     col1, col2 = st.columns(2)
@@ -587,7 +620,7 @@ elif page == "Player vs Player":
 # ==============================================================================
 # PAGE 4: DECK & SET ANALYSIS
 # ==============================================================================
-elif page == "Deck & Set Analysis":
+elif selection == "Decks":
     st.title("🎴 Deck & Set Analysis")
     df_d = shared_filtered_df.copy()
     
