@@ -376,9 +376,9 @@ if selection == "Dashboard":
             if kill_cols and len(adv_stats[adv_stats['games'] >= 3]) > 0:
                 least_lethal_cand = adv_stats[adv_stats['games'] >= 3]
                 least_lethal = least_lethal_cand.loc[least_lethal_cand['total_kills'].idxmin()]
-                st.markdown(render_card("🧸", "Least Lethal", least_lethal['player'], f"{int(least_lethal['total_kills'])} kills", "Few finishing blows (min 3 games)", "#ff9999"), unsafe_allow_html=True)
+                st.markdown(render_card("🧸", "Least Lethal", least_lethal['player'], f"{int(least_lethal['total_kills'])} kills", "Fewest finishing blows", "#ff9999"), unsafe_allow_html=True)
             else:
-                st.markdown(render_card("🧸", "Least Lethal", "N/A", "No data", "Few finishing blows (min 3 games)", "#ff9999"), unsafe_allow_html=True)
+                st.markdown(render_card("🧸", "Least Lethal", "N/A", "No data", "Fewest finishing blows", "#ff9999"), unsafe_allow_html=True)
 
         st.write("")  # Spacing
 
@@ -408,12 +408,31 @@ if selection == "Dashboard":
                     if total_p_dmg > 0:
                         max_target = None
                         max_dmg = 0
+                        
+                        # Collect all damage values for smoothing calculation
+                        all_damages = []
                         for col in damage_cols:
                             col_dmg = p_df[col].sum()
+                            all_damages.append(col_dmg)
                             if col_dmg > max_dmg:
                                 max_dmg = col_dmg
                                 max_target = col.replace('damage_', '').title()
-                        fixation = (max_dmg / total_p_dmg) * 100
+                        
+                        # Calculate raw fixation percentage
+                        raw_fixation = (max_dmg / total_p_dmg) * 100
+                        
+                        # Apply smoothing based on damage distribution variance (coefficient of variation)
+                        mean_dmg = total_p_dmg / len(all_damages) if all_damages else 0
+                        if mean_dmg > 0:
+                            variance = sum((dmg - mean_dmg) ** 2 for dmg in all_damages) / len(all_damages)
+                            std_dev = variance ** 0.5
+                            cv = std_dev / mean_dmg  # Coefficient of variation
+                            # Smoothing factor: 1/(1+CV*0.5) - matches Nemesis Tracker
+                            smoothing_factor = 1.0 / (1.0 + cv * 0.5)
+                            fixation = raw_fixation * smoothing_factor
+                        else:
+                            fixation = raw_fixation
+                        
                         grudge_data[player] = {'fixation': fixation, 'target': max_target}
                 
                 if grudge_data:
@@ -438,9 +457,9 @@ if selection == "Dashboard":
                     dmg_received[player] = total_received
                 
                 max_punched = max(dmg_received, key=dmg_received.get)
-                st.markdown(render_card("🥊", "Punching Bag", max_punched, f"{int(dmg_received[max_punched])} received", "Gets focused most often", "#ff69b4"), unsafe_allow_html=True)
+                st.markdown(render_card("🥊", "Punching Bag", max_punched, f"{int(dmg_received[max_punched])} received", "Most damage taken", "#ff69b4"), unsafe_allow_html=True)
             else:
-                st.markdown(render_card("🥊", "Punching Bag", "N/A", "No data", "Gets focused most often", "#ff69b4"), unsafe_allow_html=True)
+                st.markdown(render_card("🥊", "Punching Bag", "N/A", "No data", "Most damage taken", "#ff69b4"), unsafe_allow_html=True)
         
         # 8. Glass Cannon 💣
         with row2_cols[3]:
@@ -659,8 +678,12 @@ if selection == "Dashboard":
                             max_target = None
                             max_dmg = 0
                             max_dmg_col_idx = None
+                            
+                            # Collect all damage values for smoothing calculation
+                            all_damages = []
                             for i, col in enumerate(damage_cols):
                                 col_dmg = pd.to_numeric(p_df[col], errors='coerce').fillna(0).sum()
+                                all_damages.append(col_dmg)
                                 if col_dmg > max_dmg:
                                     max_dmg = col_dmg
                                     max_target = col.replace('damage_', '').title()
@@ -671,7 +694,23 @@ if selection == "Dashboard":
                             if max_dmg_col_idx is not None and max_dmg_col_idx < len(kill_cols):
                                 nemesis_kills = int(pd.to_numeric(p_df[kill_cols[max_dmg_col_idx]], errors='coerce').fillna(0).sum())
                             
-                            fixation_pct = (max_dmg / total_dmg) * 100
+                            # Calculate raw fixation percentage
+                            raw_fixation = (max_dmg / total_dmg) * 100
+                            
+                            # Apply smoothing based on damage distribution variance (coefficient of variation)
+                            # High CV (extreme concentration) = low smoothing factor (penalty)
+                            # Low CV (even distribution) = high smoothing factor (no penalty)
+                            mean_dmg = total_dmg / len(all_damages) if all_damages else 0
+                            if mean_dmg > 0:
+                                variance = sum((dmg - mean_dmg) ** 2 for dmg in all_damages) / len(all_damages)
+                                std_dev = variance ** 0.5
+                                cv = std_dev / mean_dmg  # Coefficient of variation
+                                # Smoothing factor: 1/(1+CV*0.6) penalizes high CV but more gently (60% strength)
+                                smoothing_factor = 1.0 / (1.0 + cv * 0.5)
+                                fixation_pct = raw_fixation * smoothing_factor
+                            else:
+                                fixation_pct = raw_fixation
+                            
                             nemesis_data.append({
                                 'Attacker': player_name,
                                 'Nemesis': max_target or "N/A",
