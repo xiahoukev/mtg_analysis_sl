@@ -1,0 +1,119 @@
+game_id,player,type,deck,position,draw_type,primary_mana,damage_alex,damage_chris,damage_kevin,damage_sandro,kill_alex,kill_chris,kill_kevin,kill_sandro,Time,Avg Time
+1,Alex,Lord of the Rings,Rohan,2,Standard,Jeskai {W} {Blue} {R},,,,,,,,,,
+1,Chris,Lord of the Rings,Mordor,4,Standard,Grixis {Blue} {Black} {R},,,,,,,,,,
+1,Kevin,Lord of the Rings,Elves,3,Standard,Simic {Blue} {G},,,,,,,,,,
+1,Sandro,Lord of the Rings,Hobbits,1,Standard,Abzan {W} {Black} {G},,,,,,,,,,
+2,Alex,Lord of the Rings,Hobbits,3,Standard,Abzan {W} {Black} {G},,,,,,,,,,
+2,Kevin,Lord of the Rings,Mordor,2,Standard,Grixis {Blue} {Black} {R},,,,,,,,,,
+2,Sandro,Lord of the Rings,Rohan,1,Standard,Jeskai {W} {Blue} {R},,,,,,,,,,
+3,Alex,Lord of the Rings,Mordor,4,Standard,Grixis {Blue} {Black} {R},,,,,,,,,,
+3,Chris,Lord of the Rings,Hobbits,2,Standard,Abzan {W} {Black} {G},,,,,,,,,,
+3,Kevin,Lord of the Rings,Rohan,3,Standard,Jeskai {W} {Blue} {R},,,,,,,,,,
+3,Sandro,Lord of the Rings,Elves,1,Standard,Simic {Blue} {G},,,,,,,,,,
+4,Alex,Warhammer,Tyrannids,2,Standard,Temur {Blue} {R} {G},,,,,,,,,,
+4,Chris,Warhammer,Imperium,4,Standard,Esper {W} {Blue} {Black},,,,,,,,,,
+4,Kevin,Warhammer,Necron,1,Standard,Mono-Black,,,,,,,,,,
+4,Sandro,Warhammer,Chaos,3,Standard,Grixis {Blue} {Black} {R},,,,,,,,,,
+5,Alex,Warhammer,Chaos,2,Standard,Grixis {Blue} {Black} {R},,,,,,,,,,
+5,Chris,Warhammer,Tyrannids,4,Standard,Temur {Blue} {R} {G},,,,,,,,,,
+5,Kevin,Warhammer,Necron,1,Standard,Mono-Black,,,,,,,,,,
+5,Sandro,Warhammer,Imperium,3,Standard,Esper {W} {Blue} {Black},,,,,,,,,,
+7,Alex,Warhammer,Chaos,3,Standard,Grixis {Blue} {Black} {R},,,,,,,,,,
+7,Chris,Warhammer,Imperium,4,Standard,Esper {W} {Blue} {Black},,,,,,,,,,
+7,Kevin,Warhammer,Necron,1,Standard,Mono-Black,,,,,,,,,,
+7,Sandro,Warhammer,Tyrannids,2,Standard,Temur {Blue} {R} {G},,,,,,,,,,
+8,Alex,Lord of the Rings,Rohan,1,Standard,Jeskai {W} {Blue} {R},,,,,,,,,,
+8,Chris,Lord of the Rings,Hobbits,4,Standard,Abzan {W} {Black} {G},,,,,,,,,,
+8,Kevin,Lord of the Rings,Mordor,3,Standard,Grixis {Blue} {Black} {R},,,,,,,,,,
+8,Sandro,Lord of the Rings,Elves,2,Standard,Simic {Blue} {G},,,,,,,,,,
+9,Alex,Warhammer,Necron,1,Standard,Mono-Black,,,,,,,,,,
+9,Kevin,Warhammer,Chaos,2,Standard,Grixis {Blue} {Black} {R},,,,,,,,,,
+9,Sandro,Warhammer,Imperium,3,Standard,Esper {W} {Blue} {Black},,,,,,,,,,
+10,Kevin,Bloomburrow,Animated Army,3,Standard,Gruul {R} {G},,,,,,,,,,
+10,Chris,Bloomburrow,Squirrled Away,4,Standard,Golgari {Black} {G},,,,,,,,,,
+10,Sandro,Bloomburrow,Family Matters,1,Standard,Jeskai {W} {Blue} {R},,,,,,,,,,
+10,Alex,Bloomburrow,Peace Offering,2,Standard,Bant {W} {Blu} {G} ,,,,,,,,,,
+11,Kevin,Bloomburrow,Animated Army,1,Standard,Gruul {R} {G},,,,,,,,,,
+11,Chris,Bloomburrow,Squirrled Away,4,Standard,Golgari {Black} {G},,,,,,,,,,
+11,Sandro,Bloomburrow,Family Matters,3,Standard,Jeskai {W} {Blue} {R},,,,,,,,,,
+11,Alex,Bloomburrow,Peace Offering,2,Standard,Bant {W} {Blu} {G} ,,,,,,,,,,
+12,Kevin,Bloomburrow,Animated Army,2,Standard,Gruul {R} {G},,,,,,,,,,
+12,Chris,Bloomburrow,Squirrled Away,1,Standard,Golgari {Black} {G},,,,,,,,,,
+12,Sandro,Bloomburrow,Family Matters,4,Standard,Jeskai {W} {Blue} {R},,,,,,,,,,
+12,Alex,Bloomburrow,Peace Offering,3,Standard,Bant {W} {Blu} {G} ,,,,,,,,,,
+13,Alex,Warhammer,Tyrannids,2,Standard,Temur {Blue} {R} {G},,,,,,,,,,
+13,Chris,Warhammer,Necron,3,Standard,Mono-Black,,,,,,,,,,
+13,Kevin,Warhammer,Imperium,1,Standard,Esper {W} {Blue} {Black},,,,,,,,,,
+13,Sandro,Warhammer,Chaos,4,Standard,Grixis {Blue} {Black} {R},,,,,,,,,,
+14,Alex,Lord of the Rings,Hobbits,2,Standard,Abzan {W} {Black} {G},,,,,,,,,,
+14,Chris,Lord of the Rings,Rohan,4,Standard,Jeskai {W} {Blue} {R},,,,,,,,,,
+14,Kevin,Lord of the Rings,Mordor,1,Standard,Grixis {Blue} {Black} {R},,,,,,,,,,
+14,Sandro,Lord of the Rings,Elves,3,Standard,Simic {Blue} {G},,,,,,,,,,
+15,Alex,Warhammer,Imperium,4,Standard,Esper {W} {Blue} {Black},,,,,,,,,,
+15,Chris,Warhammer,Chaos,3,Standard,Grixis {Blue} {Black} {R},,,,,,,,,,
+15,Kevin,Warhammer,Tyrannids,2,Standard,Temur {Blue} {R} {G},,,,,,,,,,
+15,Sandro,Warhammer,Necron,1,Standard,Mono-Black,,,,,,,,,,
+16,Alex,Bloomburrow,Family Matters,3,Standard,Jeskai {W} {Blue} {R},,,,,,,,,,
+16,Chris,Bloomburrow,Animated Army,2,Standard,Gruul {R} {G},,,,,,,,,,
+16,Kevin,Bloomburrow,Peace Offering,1,Standard,Bant {W} {Blu} {G} ,,,,,,,,,,
+16,Sandro,Bloomburrow,Squirrled Away,4,Standard,Golgari {Black} {G},,,,,,,,,,
+17,Alex,Lord of the Rings,Hobbits,2,Standard,Abzan {W} {Black} {G},,,,,,,,,,
+17,Chris,Lord of the Rings,Rohan,3,Standard,Jeskai {W} {Blue} {R},,,,,,,,,,
+17,Kevin,Lord of the Rings,Elves,1,Standard,Simic {Blue} {G},,,,,,,,,,
+17,Sandro,Lord of the Rings,Mordor,4,Standard,Grixis {Blue} {Black} {R},,,,,,,,,,
+18,Alex,Takir Dragonstorm,Saultai Anisen,4,Standard,Sultai {Blue} {Black} {G},,,,,,,,,,
+18,Chris,Takir Dragonstorm,Temur Roar,3,Standard,Temur {Blue} {R} {G},,,,,,,,,,
+18,Kevin,Takir Dragonstorm,Abzan Armour,2,Standard,Abzan {W} {Black} {G},,,,,,,,,,
+18,Sandro,Takir Dragonstorm,Jeskai Striker,1,Standard,Jeskai {W} {Blue} {R},,,,,,,,,,
+19,Alex,Takir Dragonstorm,Temur Roar,3,Houston,Temur {Blue} {R} {G},,,,,,,,,,
+19,Chris,Takir Dragonstorm,Jeskai Striker,1,Houston,Jeskai {W} {Blue} {R},,,,,,,,,,
+19,Kevin,Takir Dragonstorm,Saultai Anisen,4,Houston,Sultai {Blue} {Black} {G},,,,,,,,,,
+19,Sandro,Takir Dragonstorm,Mardu Surge,2,Houston,Mardu {W} {Black} {R},,,,,,,,,,
+20,Alex,Takir Dragonstorm,Abzan Armour,2,Houston,Abzan {W} {Black} {G},,,,,,,,,,
+20,Chris,Takir Dragonstorm,Temur Roar,3,Houston,Temur {Blue} {R} {G},,,,,,,,,,
+20,Kevin,Takir Dragonstorm,Saultai Anisen,1,Houston,Sultai {Blue} {Black} {G},,,,,,,,,,
+20,Sandro,Takir Dragonstorm,Mardu Surge,4,Houston,Mardu {W} {Black} {R},,,,,,,,,,
+21,Alex,Final Fantasy,Limit Breaker,2,Houston,Naya {W} {R} {G},0,7,9,4,0,0,0,0,00:27:17,00:02:28
+21,Chris,Final Fantasy,Scions & Spell Craft,3,Houston,Esper {W} {Blue} {Black},20,1,24,20,1,0,0,0,00:45:02,00:04:05
+21,Kevin,Final Fantasy,Counter Blitz,1,Houston,Bant {W} {Blu} {G} ,8,47,0,11,0,1,0,1,01:01:48,00:05:37
+21,Sandro,Final Fantasy,Revival Trance,4,Houston,Mardu {W} {Black} {R},12,8,2,2,0,0,0,0,00:41:40,00:04:10
+22,Alex,Final Fantasy,Scions & Spell Craft,2,Houston,Esper {W} {Blue} {Black},16,29,31,5,0,0,1,0,00:44:07,00:03:40
+22,Chris,Final Fantasy,Revival Trance,1,Houston,Mardu {W} {Black} {R},59,9,21,14,1,0,0,0,01:18:06,00:06:30
+22,Kevin,Final Fantasy,Limit Breaker,3,Houston,Naya {W} {R} {G},6,2,0,29,0,0,0,1,00:44:47,00:04:28
+22,Sandro,Final Fantasy,Counter Blitz,4,Houston,Bant {W} {Blu} {G} ,13,0,9,0,0,0,0,0,00:52:29,00:06:33
+23,Alex,Doctor Who,Timey Wimey,2,Houston,Jeskai {W} {Blue} {R},0,18,21,4,0,1,0,1,01:14:02,00:06:18
+23,Chris,Doctor Who,Masters of Evil,3,Houston,Grixis {Blue} {Black} {R},15,0,0,2,0,0,0,0,00:41:30,00:04:36
+23,Kevin,Doctor Who,Blast From the Past,1,Houston,Bant {W} {Blu} {G} ,10,0,0,10,1,0,0,0,01:11:25,00:04:25
+23,Sandro,Doctor Who,Paradox Power,4,Houston,Temur {Blue} {R} {G},2,0,3,4,0,0,0,0,00:57:15,00:06:21
+24,Alex,Takir Dragonstorm,Temur Roar,1,Houston,Temur {Blue} {R} {G},7,23,58,52,0,0,1,1,00:52:48,00:04:24
+24,Chris,Takir Dragonstorm,Mardu Surge,4,Houston,Mardu {W} {Black} {R},6,0,0,2,0,0,0,0,00:41:10,00:04:13
+24,Kevin,Takir Dragonstorm,Saultai Anisen,2,Houston,Sultai {Blue} {Black} {G},3,26,4,0,0,1,0,0,00:56:15,00:04:41
+24,Sandro,Takir Dragonstorm,Jeskai Striker,3,Houston,Jeskai {W} {Blue} {R},27,0,31,0,0,0,0,0,01:07:28,00:06:08
+25,Alex,Bloomburrow,Animated Army,4,Houston,Gruul {R} {G},0,4,4,0,0,0,0,0,00:37:12,00:03:22
+25,Chris,Bloomburrow,Peace Offering,2,Houston,Bant {W} {Blu} {G} ,5,0,5,5,0,0,0,0,00:49:56,00:03:50
+25,Kevin,Bloomburrow,Family Matters,1,Houston,Jeskai {W} {Blue} {R},8,54,0,46,0,1,0,1,01:33:42,00:07:12
+25,Sandro,Bloomburrow,Squirrled Away,3,Houston,Golgari {Black} {G},13,7,22,0,1,0,0,0,01:14:57,00:06:14
+26,Alex,Fallout,Mutant Menace,4,Houston,Sultai {Blue} {Black} {G},,,,,,,,,,
+26,Chris,Fallout,Science!,3,Houston,Jeskai {W} {Blue} {R},,,,,,,,,,
+26,Kevin,Fallout,Scrappy Survivors,1,Houston,Naya {W} {R} {G},,,,,,,,,,
+26,Sandro,Fallout,"Hail, Caeser",2,Houston,Mardu {W} {Black} {R},,,,,,,,,,
+27,Alex,Lord of the Rings,Elves,2,Houston,Simic {Blue} {G},0,81,7,0,0,1,0,0,01:02:26,00:06:14
+27,Chris,Warhammer,Imperium,3,Houston,Esper {W} {Blue} {Black},6,0,4,47,0,0,0,1,00:51:30,00:05:43
+27,Kevin,Takir Dragonstorm,Abzan Armour,1,Houston,Abzan {W} {Black} {G},25,0,11,6,1,0,0,0,00:39:44,00:03:36
+27,Sandro,Bloomburrow,Peace Offering,4,Houston,Bant {W} {Blu} {G} ,9,11,9,0,0,0,0,0,00:47:08,00:05:14
+28,Alex,Lord of the Rings,Rohan,4,Houston,Jeskai {W} {Blue} {R},,,,,,,,,,
+28,Chris,Bloomburrow,Family Matters,2,Houston,Jeskai {W} {Blue} {R},,,,,,,,,,
+28,Kevin,Doctor Who,Timey Wimey,1,Houston,Jeskai {W} {Blue} {R},,,,,,,,,,
+28,Sandro,Takir Dragonstorm,Jeskai Striker,3,Houston,Jeskai {W} {Blue} {R},,,,,,,,,,
+29,Alex,Fallout,Mutant Menace,4,Houston,Sultai {Blue} {Black} {G},1,20,10,3,0,0,0,0,00:32:23,00:04:37
+29,Chris,Fallout,Scrappy Survivors,3,Houston,Jeskai {W} {Blue} {R},25,1,0,0,0,0,0,0,00:29:51,00:04:58
+29,Kevin,Fallout,"Hail, Caeser",1,Houston,Naya {W} {R} {G},18,19,19,38,1,1,0,1,00:55:13,00:04:14
+29,Sandro,Fallout,Science!,2,Houston,Mardu {W} {Black} {R},2,2,4,12,0,0,0,0,01:01:02,00:04:41
+30,Alex,Marvel,Avengers Assemble,4,Houston,Jeskai {W} {Blue} {R},0,4,15,17,0,0,0,0,01:31:41,00:07:03
+30,Chris,Marvel,Fantastic Four,2,Houston,Ink-Tread {xBlacl},4,0,0,29,0,0,0,1,01:21:47,00:05:50
+30,Kevin,Marvel,Wakanda Forever,1,Houston,Selesenya {G} {W},11,73,0,3,1,1,0,0,01:08:50,00:04:55
+30,Sandro,Marvel,Doom Prevails,3,Houston,Grixis {Blue} {Black} {R},25,16,16,2,0,0,0,0,01:32:00,00:07:04
+31,Alex,Marvel,Fantastic Four,4,Houston,Ink-Tread {xBlacl},0,2,9,2,0,0,0,0,00:59:22,00:05:56
+31,Chris,Marvel,Avengers Assemble,1,Houston,Jeskai {W} {Blue} {R},3,0,26,22,0,0,1,1,00:48:50,00:03:45
+31,Kevin,Marvel,Doom Prevails,2,Houston,Grixis {Blue} {Black} {R},30,20,2,21,1,0,0,0,00:46:32,00:03:34
+31,Sandro,Marvel,Wakanda Forever,3,Houston,Selesenya {G} {W},7,11,10,0,0,0,0,0,00:54:47,00:05:28
