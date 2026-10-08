@@ -226,7 +226,7 @@ st.sidebar.markdown("---")
 st.sidebar.header("Global Filters")
 
 game_range_options = [
-    "Last 3 Games"
+    "Last 3 Games",
     "Last 5 Games",
     "Last 10 Games",
     "Last 15 Games",
@@ -236,7 +236,7 @@ game_range_options = [
 selected_game_range = st.sidebar.radio(
     "Games to View",
     game_range_options,
-    index=4,
+    index=0,
     key="game_range",
     on_change=reset_range_dependent_filters,
 )
@@ -289,6 +289,7 @@ filtered_elo_history_df, _ = calculate_elo(shared_filtered_df)
 # ==============================================================================
 if selection == "Dashboard":
     st.title(f"{APP_TITLE} - Dashboard")
+    st.caption(f"Reference range: {selected_game_range}. Change the game range in the sidebar options.")
     dashboard_df = shared_filtered_df.copy()
 
     # --- TOP STATS ROW ---
