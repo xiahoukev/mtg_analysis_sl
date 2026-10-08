@@ -166,6 +166,8 @@ try:
     
     if 'position' in raw_df.columns:
         raw_df['position'] = pd.to_numeric(raw_df['position'], errors='coerce')
+    if 'game_id' in raw_df.columns:
+        raw_df['game_id'] = pd.to_numeric(raw_df['game_id'], errors='coerce')
     if 'deck' in raw_df.columns:
         raw_df['deck'] = raw_df['deck'].replace({'Elven': 'Elves'}) 
     if 'primary_mana' in raw_df.columns:
@@ -194,12 +196,22 @@ except Exception as e:
 if 'reset_trigger' not in st.session_state:
     st.session_state.reset_trigger = False
 
+st.session_state['f_player'] = all_players_def
+st.session_state['f_draw'] = get_valid_options(raw_df, 'draw_type')
+st.session_state['f_type'] = get_valid_options(raw_df, 'type')
+st.session_state['f_deck'] = get_valid_options(raw_df, 'deck')
+st.session_state['f_color'] = get_valid_options(raw_df, 'primary_mana')
+
 def reset_callbacks():
     st.session_state['f_player'] = all_players_def
     st.session_state['f_draw'] = get_valid_options(raw_df, 'draw_type')
     st.session_state['f_type'] = get_valid_options(raw_df, 'type')
     st.session_state['f_deck'] = get_valid_options(raw_df, 'deck')
     st.session_state['f_color'] = get_valid_options(raw_df, 'primary_mana')
+
+def reset_range_dependent_filters():
+    """Clear dependent filters when the range changes so their values remain valid."""
+    reset_callbacks()
 
 st.sidebar.title("Navigation")
 
@@ -213,37 +225,64 @@ selection = st.sidebar.radio(
 st.sidebar.markdown("---")
 st.sidebar.header("Global Filters")
 
-if st.sidebar.button("🔄 Reset All Filters", on_click=reset_callbacks):
+game_range_options = [
+    "Last 3 Games"
+    "Last 5 Games",
+    "Last 10 Games",
+    "Last 15 Games",
+    "Last 20 Games",
+    "All Games",
+]
+selected_game_range = st.sidebar.radio(
+    "Games to View",
+    game_range_options,
+    index=4,
+    key="game_range",
+    on_change=reset_range_dependent_filters,
+)
+
+if st.sidebar.button("🔄 Reset Filter Options", on_click=reset_callbacks):
     pass 
 
 with st.sidebar.expander("Filter Options", expanded=True):
-    # 1. Player
-    selected_players = st.multiselect("Player", options=all_players_def, default=all_players_def, key='f_player')
-    df_f0 = raw_df[raw_df['player'].isin(selected_players)] if selected_players else raw_df.copy()
+    # 1. Game range
+    if selected_game_range == "All Games":
+        range_filtered_df = raw_df.copy()
+    else:
+        game_count = int(selected_game_range.removeprefix("Last ").removesuffix(" Games"))
+        latest_match_ids = sorted(raw_df['match_uuid'].dropna().unique())[-game_count:]
+        range_filtered_df = raw_df[raw_df['match_uuid'].isin(latest_match_ids)].copy()
 
-    # 2. Draw Type
+    # 2. Player
+    selected_players = st.multiselect("Player", options=all_players_def, key='f_player')
+    df_f0 = range_filtered_df[range_filtered_df['player'].isin(selected_players)] if selected_players else range_filtered_df.copy()
+
+    # 3. Draw Type
     avail_draws = get_valid_options(df_f0, 'draw_type')
-    selected_draws = st.multiselect("Draw Type", options=avail_draws, default=avail_draws, key='f_draw')
+    selected_draws = st.multiselect("Draw Type", options=avail_draws, key='f_draw')
     df_f1 = df_f0[df_f0['draw_type'].isin(selected_draws)] if selected_draws else df_f0.copy()
 
-    # 3. Format
+    # 4. Format
     avail_types = get_valid_options(df_f1, 'type')
-    selected_types = st.multiselect("Game Format / Type", options=avail_types, default=avail_types, key='f_type')
+    selected_types = st.multiselect("Game Format / Type", options=avail_types, key='f_type')
     df_f2 = df_f1[df_f1['type'].isin(selected_types)] if selected_types else df_f1.copy()
 
-    # 4. Deck
+    # 5. Deck
     avail_decks = get_valid_options(df_f2, 'deck')
-    selected_decks = st.multiselect("Deck", options=avail_decks, default=avail_decks, key='f_deck')
+    selected_decks = st.multiselect("Deck", options=avail_decks, key='f_deck')
     df_f3 = df_f2[df_f2['deck'].isin(selected_decks)] if selected_decks else df_f2.copy()
 
-    # 5. Colour
+    # 6. Colour
     avail_colors = get_valid_options(df_f3, 'primary_mana')
-    selected_colors = st.multiselect("Primary Colour", options=avail_colors, default=avail_colors, key='f_color')
+    selected_colors = st.multiselect("Primary Colour", options=avail_colors, key='f_color')
     
     if 'primary_mana' in df_f3.columns:
         shared_filtered_df = df_f3[df_f3['primary_mana'].isin(selected_colors)] if selected_colors else df_f3.copy()
     else:
         shared_filtered_df = df_f3.copy()
+
+# Recalculate Elo from the same filtered game set so analytics remain consistent.
+filtered_elo_history_df, _ = calculate_elo(shared_filtered_df)
 
 # ==============================================================================
 # PAGE 1: DASHBOARD
@@ -854,8 +893,8 @@ elif selection == "Analytics":
     with st.expander("ℹ️ Understanding the Elo System (Click to expand)"):
         st.markdown("* **Starting Score:** 1200\n* **K-Factor:** 32 (Speed of rank change)\n* **Zero-Sum:** Points are stolen from opponents.")
     
-    if not elo_history_df.empty:
-        elo_plot_df = elo_history_df[elo_history_df['player'].isin(selected_players)]
+    if not filtered_elo_history_df.empty:
+        elo_plot_df = filtered_elo_history_df[filtered_elo_history_df['player'].isin(selected_players)]
         
         if elo_plot_df.empty:
             st.warning("Not enough data to calculate Elo ratings.")
@@ -976,11 +1015,11 @@ elif selection == "PvP":
     st.title("⚔️ Head-to-Head Comparison")
     st.markdown("Compare two players directly. Statistics are calculated **only from matches where both players participated**.")
     
-    if 'player' not in raw_df.columns:
+    if 'player' not in shared_filtered_df.columns:
         st.error("Missing player columns.")
     else:
         col1, col2 = st.columns(2)
-        p_options = sorted(raw_df['player'].dropna().unique())
+        p_options = sorted(shared_filtered_df['player'].dropna().unique())
         
         with col1:
             p1 = st.selectbox("Select Player 1", p_options, index=0)
@@ -990,17 +1029,17 @@ elif selection == "PvP":
             
         if p1 == p2:
             st.warning("Please select two different players to see the comparison.")
-        elif 'match_uuid' not in raw_df.columns:
+        elif 'match_uuid' not in shared_filtered_df.columns:
             st.error("Missing match tracking required for head-to-head analysis.")
         else:
-            p1_matches = set(raw_df[raw_df['player'] == p1]['match_uuid'])
-            p2_matches = set(raw_df[raw_df['player'] == p2]['match_uuid'])
+            p1_matches = set(shared_filtered_df[shared_filtered_df['player'] == p1]['match_uuid'])
+            p2_matches = set(shared_filtered_df[shared_filtered_df['player'] == p2]['match_uuid'])
             common_matches = p1_matches.intersection(p2_matches)
             
             if not common_matches:
                 st.error(f"No matches found where {p1} and {p2} played against each other.")
             else:
-                h2h_df = raw_df[raw_df['match_uuid'].isin(common_matches)]
+                h2h_df = shared_filtered_df[shared_filtered_df['match_uuid'].isin(common_matches)]
                 total_games = len(common_matches)
                 
                 def get_h2h_stats(player_name, opponent_name, df):
@@ -1116,9 +1155,9 @@ elif selection == "Decks":
 
         with t3:
             st.subheader("Set Freshness Tracker")
-            if 'match_uuid' in raw_df.columns and 'type' in raw_df.columns:
-                curr = raw_df['match_uuid'].max()
-                rec = raw_df.groupby('type').agg(lst=('match_uuid','max'), cnt=('match_uuid','nunique')).reset_index()
+            if 'match_uuid' in df_d.columns and 'type' in df_d.columns:
+                curr = df_d['match_uuid'].max()
+                rec = df_d.groupby('type').agg(lst=('match_uuid','max'), cnt=('match_uuid','nunique')).reset_index()
                 rec['ago'] = curr - rec['lst']
                 
                 st.dataframe(

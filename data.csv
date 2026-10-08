@@ -117,3 +117,7 @@ game_id,player,type,deck,position,draw_type,primary_mana,damage_alex,damage_chri
 31,Chris,Marvel,Avengers Assemble,1,Houston,Jeskai {W} {Blue} {R},3,0,26,22,0,0,1,1,00:48:50,00:03:45
 31,Kevin,Marvel,Doom Prevails,2,Houston,Grixis {Blue} {Black} {R},30,20,2,21,1,0,0,0,00:46:32,00:03:34
 31,Sandro,Marvel,Wakanda Forever,3,Houston,Selesenya {G} {W},7,11,10,0,0,0,0,0,00:54:47,00:05:28
+31,Alex,Fallout,Science!,1,Houston,Mardu {W} {Black} {R},3,6,1,11,0,1,0,0,01:13:49,00:07:26
+31,Chris,Fallout,Scrappy Survivors,2,Houston,Jeskai {W} {Blue} {R},16,6,26,96,0,0,0,1,01:11:17,00:05:56
+31,Kevin,Fallout,Mutant Menace,4,Houston,Sultai {Blue} {Black} {G},0,23,9,0,0,0,0,0,01:17:06,00:06:25
+31,Sandro,Fallout,"Hail, Caeser",3,Houston,Naya {W} {R} {G},3,6,10,11,0,0,1,0,00:43:52,00:04:23
