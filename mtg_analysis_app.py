@@ -196,11 +196,16 @@ except Exception as e:
 if 'reset_trigger' not in st.session_state:
     st.session_state.reset_trigger = False
 
-st.session_state['f_player'] = all_players_def
-st.session_state['f_draw'] = get_valid_options(raw_df, 'draw_type')
-st.session_state['f_type'] = get_valid_options(raw_df, 'type')
-st.session_state['f_deck'] = get_valid_options(raw_df, 'deck')
-st.session_state['f_color'] = get_valid_options(raw_df, 'primary_mana')
+filter_defaults = {
+    'f_player': all_players_def,
+    'f_draw': get_valid_options(raw_df, 'draw_type'),
+    'f_type': get_valid_options(raw_df, 'type'),
+    'f_deck': get_valid_options(raw_df, 'deck'),
+    'f_color': get_valid_options(raw_df, 'primary_mana'),
+}
+for filter_key, default_values in filter_defaults.items():
+    if filter_key not in st.session_state:
+        st.session_state[filter_key] = default_values
 
 def reset_callbacks():
     st.session_state['f_player'] = all_players_def
@@ -208,10 +213,6 @@ def reset_callbacks():
     st.session_state['f_type'] = get_valid_options(raw_df, 'type')
     st.session_state['f_deck'] = get_valid_options(raw_df, 'deck')
     st.session_state['f_color'] = get_valid_options(raw_df, 'primary_mana')
-
-def reset_range_dependent_filters():
-    """Clear dependent filters when the range changes so their values remain valid."""
-    reset_callbacks()
 
 st.sidebar.title("Navigation")
 
@@ -233,46 +234,37 @@ game_range_options = [
     "Last 20 Games",
     "All Games",
 ]
-selected_game_range = st.sidebar.radio(
-    "Games to View",
-    game_range_options,
-    index=0,
-    key="game_range",
-    on_change=reset_range_dependent_filters,
-)
-
-if st.sidebar.button("🔄 Reset Filter Options", on_click=reset_callbacks):
-    pass 
-
 with st.sidebar.expander("Filter Options", expanded=True):
-    # 1. Game range
-    if selected_game_range == "All Games":
-        range_filtered_df = raw_df.copy()
-    else:
-        game_count = int(selected_game_range.removeprefix("Last ").removesuffix(" Games"))
-        latest_match_ids = sorted(raw_df['match_uuid'].dropna().unique())[-game_count:]
-        range_filtered_df = raw_df[raw_df['match_uuid'].isin(latest_match_ids)].copy()
+    selected_game_range = st.radio(
+        "Games to View",
+        game_range_options,
+        index=0,
+        key="game_range",
+    )
 
-    # 2. Player
+    if st.button("🔄 Reset Filter Options", on_click=reset_callbacks):
+        pass
+
+    # 1. Player
     selected_players = st.multiselect("Player", options=all_players_def, key='f_player')
-    df_f0 = range_filtered_df[range_filtered_df['player'].isin(selected_players)] if selected_players else range_filtered_df.copy()
+    df_f0 = raw_df[raw_df['player'].isin(selected_players)] if selected_players else raw_df.copy()
 
-    # 3. Draw Type
+    # 2. Draw Type
     avail_draws = get_valid_options(df_f0, 'draw_type')
     selected_draws = st.multiselect("Draw Type", options=avail_draws, key='f_draw')
     df_f1 = df_f0[df_f0['draw_type'].isin(selected_draws)] if selected_draws else df_f0.copy()
 
-    # 4. Format
+    # 3. Format
     avail_types = get_valid_options(df_f1, 'type')
     selected_types = st.multiselect("Game Format / Type", options=avail_types, key='f_type')
     df_f2 = df_f1[df_f1['type'].isin(selected_types)] if selected_types else df_f1.copy()
 
-    # 5. Deck
+    # 4. Deck
     avail_decks = get_valid_options(df_f2, 'deck')
     selected_decks = st.multiselect("Deck", options=avail_decks, key='f_deck')
     df_f3 = df_f2[df_f2['deck'].isin(selected_decks)] if selected_decks else df_f2.copy()
 
-    # 6. Colour
+    # 5. Colour
     avail_colors = get_valid_options(df_f3, 'primary_mana')
     selected_colors = st.multiselect("Primary Colour", options=avail_colors, key='f_color')
     
@@ -280,6 +272,12 @@ with st.sidebar.expander("Filter Options", expanded=True):
         shared_filtered_df = df_f3[df_f3['primary_mana'].isin(selected_colors)] if selected_colors else df_f3.copy()
     else:
         shared_filtered_df = df_f3.copy()
+
+    # Apply the game range alongside the other selected filters.
+    if selected_game_range != "All Games":
+        game_count = int(selected_game_range.removeprefix("Last ").removesuffix(" Games"))
+        latest_match_ids = sorted(raw_df['match_uuid'].dropna().unique())[-game_count:]
+        shared_filtered_df = shared_filtered_df[shared_filtered_df['match_uuid'].isin(latest_match_ids)].copy()
 
 # Recalculate Elo from the same filtered game set so analytics remain consistent.
 filtered_elo_history_df, _ = calculate_elo(shared_filtered_df)
