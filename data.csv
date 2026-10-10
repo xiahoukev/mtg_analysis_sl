@@ -121,3 +121,7 @@ game_id,player,type,deck,position,draw_type,primary_mana,damage_alex,damage_chri
 31,Chris,Fallout,Scrappy Survivors,2,Houston,Jeskai {W} {Blue} {R},16,6,26,96,0,0,0,1,01:11:17,00:05:56
 31,Kevin,Fallout,Mutant Menace,4,Houston,Sultai {Blue} {Black} {G},0,23,9,0,0,0,0,0,01:17:06,00:06:25
 31,Sandro,Fallout,"Hail, Caeser",3,Houston,Naya {W} {R} {G},3,6,10,11,0,0,1,0,00:43:52,00:04:23
+32,Alex,Doctor Who,Masters of Evil,2,Houston,Grixis {Blue} {Black} {R},11,13,5,5,1,0,0,0,00:41:28,00:04:36
+32,Chris,Fallout,Mutant Menace,4,Houston,Sultai {Blue} {Black} {G},2,2,0,0,0,0,0,0,00:22:20,00:03:11
+32,Kevin,Takir Dragonstorm,Saultai Anisen,1,Houston,Sultai {Blue} {Black} {G},32,0,6,4,0,0,0,1,00:33:35,00:03:23
+32,Sandro,Marvel,Doom Prevails,3,Houston,Grixis {Blue} {Black} {R},25,26,22,8,0,1,0,0,01:01:55,00:06:52
